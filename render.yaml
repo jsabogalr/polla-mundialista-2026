@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: polla-mundialista-2026
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: python app.py
