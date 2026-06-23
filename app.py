@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request
 from models import db, Usuario, Partido, Pronostico
 
@@ -255,6 +256,16 @@ def cargar_resultados():
 
     return "Resultados cargados"
 
+@app.route("/limpiar")
+def limpiar():
+
+    Pronostico.query.delete()
+    Partido.query.delete()
+
+    db.session.commit()
+
+    return "Base limpiada"
+
 if __name__ == "__main__":
 
     with app.app_context():
@@ -294,14 +305,10 @@ if __name__ == "__main__":
             db.session.add_all(usuarios)
             db.session.commit()
 
-    app.run(debug=True)
-    
-@app.route("/limpiar")
-def limpiar():
+    port = int(os.environ.get("PORT", 5000))
 
-    Pronostico.query.delete()
-    Partido.query.delete()
-
-    db.session.commit()
-
-    return "Base limpiada"
+    app.run(
+        host="0.0.0.0",
+        port=port,
+        debug=False
+    )
